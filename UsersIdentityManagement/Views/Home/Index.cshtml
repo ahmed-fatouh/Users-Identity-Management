@@ -1,0 +1,12 @@
+﻿@model Dictionary<string,object>
+
+<h3 class="bg-primary text-white p-1 m-1">User Details</h3>
+
+<table class="table table-bordered m-2">
+    @foreach (var kvp in Model)
+    {
+        <tr>
+            <th>@kvp.Key</th><td>@kvp.Value</td>
+        </tr>
+    }
+</table>
