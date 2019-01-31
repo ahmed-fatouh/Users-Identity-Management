@@ -29,10 +29,13 @@ namespace UsersIdentityManagement
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            services.AddTransient<IUserValidator<AppUser>, CustomUserValidator>();
             services.AddDbContext<AppIdentityDbContext>(opts =>
                 opts.UseSqlServer(Configuration["Data:SportStoreIdentity:ConnectionString"]));
             services.AddIdentity<AppUser, IdentityRole>(options =>
                     {
+                        options.User.RequireUniqueEmail = true;
+                        options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyz";
                         options.Password.RequiredLength = 6;
                         options.Password.RequireDigit = false;
                         options.Password.RequireLowercase = false;
