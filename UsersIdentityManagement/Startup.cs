@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using UsersIdentityManagement.Models.AppUserModels;
+using UsersIdentityManagement.Infrastructure;
 
 namespace UsersIdentityManagement
 {
@@ -40,6 +41,7 @@ namespace UsersIdentityManagement
                     })
                     .AddEntityFrameworkStores<AppIdentityDbContext>()
                     .AddDefaultTokenProviders();
+            services.AddTransient<IPasswordValidator<AppUser>, CustomPasswordValidator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
