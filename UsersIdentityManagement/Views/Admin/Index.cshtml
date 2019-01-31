@@ -1,0 +1,29 @@
+﻿@model IQueryable<AppUser>
+
+<h3 class="bg-primary text-white text-center p-1 m-1">Users Accounts</h3>
+
+@if (Model.Count() == 0)
+{
+    <div class="text-center m-5 font-weight-bold">No Users Found</div>
+}
+else
+{
+    <div class="m-1">
+        <table class="table table-bordered m-2">
+            <thead class="text-center">
+                <tr><th>Id</th><th>Name</th><th>E-mail</th></tr>
+            </thead>
+            @foreach (AppUser user in Model)
+            {
+                <tr>
+                    <th>@user.Id</th>
+                    <td>@user.UserName</td>
+                    <td>@user.Email</td>
+                </tr>
+            }
+        </table>
+    </div>
+}
+
+<a class="btn btn-primary m-1" asp-action="Create">Create User</a>
+
