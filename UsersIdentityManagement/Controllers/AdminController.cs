@@ -20,5 +20,30 @@ namespace UsersIdentityManagement.Controllers
 
         public IActionResult Index() => View(userManager.Users);
 
+        [HttpGet]
+        public IActionResult Create() => View();
+
+        [HttpPost]
+        public async Task<IActionResult> Create(CreateModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                AppUser user = new AppUser
+                {
+                    UserName = model.Name,
+                    Email = model.Email
+                };
+                IdentityResult result = await userManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+                    return RedirectToAction(nameof(Index));
+                else
+                {
+                    foreach (IdentityError error in result.Errors)
+                        ModelState.AddModelError("", error.Description);
+                }
+            }
+            return View(model);
+        }
+
     }
 }
