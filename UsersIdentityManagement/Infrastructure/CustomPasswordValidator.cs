@@ -7,10 +7,10 @@ using UsersIdentityManagement.Models.AppUserModels;
 
 namespace UsersIdentityManagement.Infrastructure
 {
-    public class CustomPasswordValidator : IPasswordValidator<AppUser>
+    public class CustomPasswordValidator : PasswordValidator<AppUser>
     {
 
-        public Task<IdentityResult> ValidateAsync(UserManager<AppUser> manager, AppUser user, string password)
+        public override Task<IdentityResult> ValidateAsync(UserManager<AppUser> manager, AppUser user, string password)
         {
             List<IdentityError> errors = new List<IdentityError>();
             
@@ -34,5 +34,7 @@ namespace UsersIdentityManagement.Infrastructure
             
             return Task.FromResult(result);
         }
+
+        
     }
 }
