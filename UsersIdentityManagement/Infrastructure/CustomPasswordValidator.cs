@@ -10,9 +10,12 @@ namespace UsersIdentityManagement.Infrastructure
     public class CustomPasswordValidator : PasswordValidator<AppUser>
     {
 
-        public override Task<IdentityResult> ValidateAsync(UserManager<AppUser> manager, AppUser user, string password)
+        public override async Task<IdentityResult> ValidateAsync(UserManager<AppUser> manager, AppUser user, string password)
         {
-            List<IdentityError> errors = new List<IdentityError>();
+            IdentityResult result = await base.ValidateAsync(manager, user, password);
+
+            List<IdentityError> errors = result.Succeeded ?
+                                         new List<IdentityError>() : result.Errors.ToList();
             
             if (password.Contains("12345"))
                 errors.Add(new IdentityError()
@@ -29,10 +32,10 @@ namespace UsersIdentityManagement.Infrastructure
                 });
             }
             
-            IdentityResult result = errors.Count == 0 ?
-                IdentityResult.Success : IdentityResult.Failed(errors.ToArray());
+            result = errors.Count == 0 ?
+                     IdentityResult.Success : IdentityResult.Failed(errors.ToArray());
             
-            return Task.FromResult(result);
+            return result;
         }
 
         

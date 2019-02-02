@@ -29,9 +29,10 @@ namespace UsersIdentityManagement
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-            services.AddTransient<IUserValidator<AppUser>, CustomUserValidator>();
             services.AddDbContext<AppIdentityDbContext>(opts =>
                 opts.UseSqlServer(Configuration["Data:SportStoreIdentity:ConnectionString"]));
+            services.AddTransient<IUserValidator<AppUser>, CustomUserValidator>();
+            services.AddTransient<IPasswordValidator<AppUser>, CustomPasswordValidator>();
             services.AddIdentity<AppUser, IdentityRole>(options =>
                     {
                         options.User.RequireUniqueEmail = true;
@@ -44,7 +45,6 @@ namespace UsersIdentityManagement
                     })
                     .AddEntityFrameworkStores<AppIdentityDbContext>()
                     .AddDefaultTokenProviders();
-            services.AddTransient<IPasswordValidator<AppUser>, CustomPasswordValidator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
