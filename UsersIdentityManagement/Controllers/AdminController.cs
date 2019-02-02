@@ -128,5 +128,25 @@ namespace UsersIdentityManagement.Controllers
                 AddModelStateErrors(result);
             return user;
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(string id)
+        {
+            if (id == null)
+                return BadRequest();
+            AppUser user = await userManager.FindByIdAsync(id);
+            if (user == null)
+                return NotFound();
+            IdentityResult result = await userManager.DeleteAsync(user);
+            if (result.Succeeded)
+                return RedirectToAction(nameof(Index));
+            else
+            {
+                AddModelStateErrors(result);
+                string content = "Can't Delete:\n";
+                result.Errors.ToList().ForEach(e => content += e.Description + "\n");
+                return Content(content);
+            }
+        }
     }
 }
