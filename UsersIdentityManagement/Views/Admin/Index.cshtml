@@ -19,6 +19,13 @@ else
                     <th>@user.Id</th>
                     <td>@user.UserName</td>
                     <td>@user.Email</td>
+                    <td class="text-center">
+                        <form asp-action="Delete" method="post">
+                            <a asp-action="Edit" class="btn btn-sm btn-warning" asp-route-id ="@user.Id">Edit</a>
+                            <input name="id" value="@user.Id" type="hidden"/>
+                            <button class="btn btn-sm btn-danger" type="submit">Delete</button>
+                        </form>
+                    </td>
                 </tr>
             }
         </table>
