@@ -20,6 +20,13 @@ else
                     <td>@user.UserName</td>
                     <td>@user.Email</td>
                     <td>@user.PasswordHash</td>
+                    <td class="text-center">
+                        <form asp-action="Delete" method="post">
+                            <a asp-action="Edit" class="btn btn-sm btn-warning">Edit</a>
+                            <input asp-for="@user.Id" type="hidden"/>
+                            <button class="btn btn-sm btn-danger" type="submit">Delete</button>
+                        </form>
+                    </td>
                 </tr>
             }
         </table>
