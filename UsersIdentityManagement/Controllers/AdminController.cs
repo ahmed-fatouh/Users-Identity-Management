@@ -60,11 +60,10 @@ namespace UsersIdentityManagement.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(string id)
         {
-            if (id == null)
-                return BadRequest();
+            IActionResult actionResult = await CheckIdAndUserAsync(id);
+            if (actionResult != null)
+                return actionResult;
             AppUser user = await userManager.FindByIdAsync(id);
-            if (user == null)
-                return NotFound();
             EditModel model = new EditModel(user.Id, user.UserName, user.Email);
             return View(model);
         }
@@ -74,9 +73,10 @@ namespace UsersIdentityManagement.Controllers
         {
             if (ModelState.IsValid)
             {
+                IActionResult actionResult = await CheckIdAndUserAsync(model.Id);
+                if (actionResult != null)
+                    return actionResult;
                 AppUser user = await userManager.FindByIdAsync(model.Id);
-                if (user == null)
-                    return NotFound();
                 user = await AddUserPropertiesToUserAsync(user, model);
                 user = await AddPasswordHashToUserAsync(user, model.Password);
                 IdentityResult result;
@@ -132,11 +132,10 @@ namespace UsersIdentityManagement.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete(string id)
         {
-            if (id == null)
-                return BadRequest();
+            IActionResult actionResult = await CheckIdAndUserAsync(id);
+            if (actionResult != null)
+                return actionResult;
             AppUser user = await userManager.FindByIdAsync(id);
-            if (user == null)
-                return NotFound();
             IdentityResult result = await userManager.DeleteAsync(user);
             if (result.Succeeded)
                 return RedirectToAction(nameof(Index));
@@ -147,6 +146,19 @@ namespace UsersIdentityManagement.Controllers
                 result.Errors.ToList().ForEach(e => content += e.Description + "\n");
                 return Content(content);
             }
+        }
+
+        //Checks if a non-null Id value is sent and if a user with this id is found.
+        //Otherwise, it returns null.
+        private async Task<IActionResult> CheckIdAndUserAsync(string id)
+        {
+            AppUser user = null;
+            if (id == null)
+                return BadRequest();
+            user = await userManager.FindByIdAsync(id);
+            if (user == null)
+                return NotFound();
+            return null;
         }
     }
 }
