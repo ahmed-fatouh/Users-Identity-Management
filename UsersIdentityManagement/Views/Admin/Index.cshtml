@@ -11,7 +11,7 @@ else
     <div class="m-1">
         <table class="table table-bordered m-2">
             <thead class="text-center">
-                <tr><th>Id</th><th>Name</th><th>E-mail</th></tr>
+                <tr><th>Id</th><th>Name</th><th>E-mail</th><th>Password Hash</th></tr>
             </thead>
             @foreach (AppUser user in Model)
             {
@@ -19,6 +19,7 @@ else
                     <th>@user.Id</th>
                     <td>@user.UserName</td>
                     <td>@user.Email</td>
+                    <td>@user.PasswordHash</td>
                 </tr>
             }
         </table>
