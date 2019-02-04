@@ -32,6 +32,7 @@ namespace UsersIdentityManagement.Controllers
 
         public IActionResult Index() => View(userManager.Users);
 
+        #region CreateActions      
         [HttpGet]
         public IActionResult Create() => View();
 
@@ -56,7 +57,9 @@ namespace UsersIdentityManagement.Controllers
             }
             return View(model);
         }
+        #endregion
 
+        #region EditActions
         [HttpGet]
         public async Task<IActionResult> Edit(string id)
         {
@@ -92,12 +95,7 @@ namespace UsersIdentityManagement.Controllers
             return View(model);
         }
 
-        private void AddModelStateErrors(IdentityResult failedIdentityResult)
-        {
-            foreach (IdentityError error in failedIdentityResult.Errors)
-                ModelState.AddModelError("", error.Description);
-        }
-
+        #region EditActionHelperMethods
         //If the password can't pass validation, the user object is returned with PasswordHash property
         //not set. Also, the ModelState Controller property is populated with validation errors.
         private async Task<AppUser> AddPasswordHashToUserAsync (AppUser user, string password)
@@ -128,7 +126,11 @@ namespace UsersIdentityManagement.Controllers
                 AddModelStateErrors(result);
             return user;
         }
+        #endregion
 
+        #endregion
+
+        #region DeleteAction
         [HttpPost]
         public async Task<IActionResult> Delete(string id)
         {
@@ -147,6 +149,14 @@ namespace UsersIdentityManagement.Controllers
                 return Content(content);
             }
         }
+        #endregion
+
+        #region GenericHelperMethods
+        private void AddModelStateErrors(IdentityResult failedIdentityResult)
+        {
+            foreach (IdentityError error in failedIdentityResult.Errors)
+                ModelState.AddModelError("", error.Description);
+        }
 
         //Checks if a non-null Id value is sent and if a user with this id is found.
         //Otherwise, it returns null.
@@ -160,5 +170,7 @@ namespace UsersIdentityManagement.Controllers
                 return NotFound();
             return null;
         }
+        #endregion
+
     }
 }
