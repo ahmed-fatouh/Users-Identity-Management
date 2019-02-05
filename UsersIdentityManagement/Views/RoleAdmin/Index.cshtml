@@ -1,0 +1,34 @@
+﻿@model IQueryable<IdentityRole>
+
+<h3 class="bg-primary text-white text-center p-1 m-1">Roles</h3>
+
+@if (Model.Count() == 0)
+{
+    <div class="text-center m-5 font-weight-bold">No Roles Found</div>
+}
+else
+{
+    <div class="m-1 p-1">
+        <table class="table table-bordered">
+            <thead class="text-center">
+                <tr><th>Id</th><th>Name</th><th>E-mail</th></tr>
+            </thead>
+            @foreach (IdentityRole role in Model)
+            {
+                <tr>
+                    <th>@role.Id</th>
+                    <th>@role.Name</th>
+                    <td class="text-center">
+                        <form asp-action="Delete" method="post">
+                            <a asp-action="Edit" class="btn btn-sm btn-warning" asp-route-id="@role.Id">Edit</a>
+                            <input name="id" value="@role.Id" type="hidden" />
+                            <button class="btn btn-sm btn-danger" type="submit">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+}
+
+<a class="btn btn-primary m-1" asp-action="Create">Create Role</a>
