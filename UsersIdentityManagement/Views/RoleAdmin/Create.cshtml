@@ -1,0 +1,16 @@
+﻿@model string
+
+<h3 class="bg-primary text-white text-center m-1 p-1">Create Role</h3>
+
+<div class="m-1 p-1">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <form asp-action="Create" method="post">
+        <div class="form-group">
+            <label for="name">Role Name</label>
+            <input name="name" class="form-control" />
+        </div>
+
+        <button class="btn btn-primary" type="submit">Create</button>
+        <a asp-action="Index" class="btn">Cancel</a>
+    </form>
+</div>
