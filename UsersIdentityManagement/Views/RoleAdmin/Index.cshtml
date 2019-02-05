@@ -11,14 +11,15 @@ else
     <div class="m-1 p-1">
         <table class="table table-bordered">
             <thead class="text-center">
-                <tr><th>Id</th><th>Name</th><th>E-mail</th></tr>
+                <tr><th>Id</th><th>Name</th><th>Users</th></tr>
             </thead>
             @foreach (IdentityRole role in Model)
             {
-                <tr>
-                    <th>@role.Id</th>
-                    <th>@role.Name</th>
-                    <td class="text-center">
+                <tr class="text-center">
+                    <td>@role.Id</td>
+                    <td>@role.Name</td>
+                    <td identity-role="@role.Id"></td>
+                    <td>
                         <form asp-action="Delete" method="post">
                             <a asp-action="Edit" class="btn btn-sm btn-warning" asp-route-id="@role.Id">Edit</a>
                             <input name="id" value="@role.Id" type="hidden" />
