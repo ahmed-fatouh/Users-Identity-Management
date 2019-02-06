@@ -10,3 +10,17 @@
         </tr>
     }
 </table>
+
+@if (User.Identity.IsAuthenticated)
+{
+    <a class="btn btn-danger m-1" asp-action="Logout" asp-controller="Account">
+        Logout
+    </a>
+}
+else
+{
+    <a class="btn btn-primary m-1" asp-action="Login" asp-controller="Account" asp-route-returnUrl="/">
+        Log In
+    </a>
+
+}

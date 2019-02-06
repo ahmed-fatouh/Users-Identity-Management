@@ -48,5 +48,14 @@ namespace UsersIdentityManagement.Controllers
             }
             return View(model);
         }
+
+        [Authorize]
+        public async Task<IActionResult> Logout()
+        {
+            await signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home");
+        }
+
+        public ViewResult AccessDenied() => View();
     }
 }
