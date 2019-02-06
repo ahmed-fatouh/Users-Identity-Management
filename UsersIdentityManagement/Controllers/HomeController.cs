@@ -9,15 +9,27 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace UsersIdentityManagement.Controllers
 {
+
     [Authorize]
     public class HomeController : Controller
     {
+        [AllowAnonymous]
+        public IActionResult Index() => View(GetData(nameof(Index)));
 
-        public IActionResult Index()
+        [Authorize(Roles = "Admins")]
+        public IActionResult OtherAction() => View("Index", GetData(nameof(OtherAction)));
+
+        private Dictionary<string, object> GetData(string actionName)
         {
-            Dictionary<string, object> details;
-            details = new Dictionary<string, object> { ["Placeholder"] = "PlaceHolder" };
-            return View(details);
+            Dictionary<string, object> details = new Dictionary<string, object>
+            {
+                ["Action"] = actionName,
+                ["User"] = HttpContext.User.Identity.Name,
+                ["Is Authenticated"] = HttpContext.User.Identity.IsAuthenticated,
+                ["Authentication Type"] = HttpContext.User.Identity.AuthenticationType,
+                ["Is In Admins Role"] = HttpContext.User.IsInRole("Admins"),
+            }; 
+            return details;
         }
     }
 }
